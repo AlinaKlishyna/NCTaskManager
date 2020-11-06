@@ -1,8 +1,18 @@
 package ua.edu.sumdu.j2se.Klishyna.tasks;
 
+import java.util.Arrays;
+
 public class ArrayTaskList {
-    int index; //індекс масиву
-    Task[] arrayTask = new Task[index];  //масив з задачами
+    private int index; //індекс масиву
+    private Task[] arrayTask ;  //масив з задачами
+
+    /**
+     * Створення конструктору ArrayTaskList
+     */
+    public ArrayTaskList() {
+        this.index = index;
+        this.arrayTask = new Task[index];
+    }
 
     /**
      * Додавання елементів(задач) до масиву
@@ -10,7 +20,7 @@ public class ArrayTaskList {
      */
     public void add(Task task){
            //створення масиву на основі існуючого з +1 осередком
-            System.arraycopy(arrayTask,0,arrayTask,0,arrayTask.length + 1);
+            arrayTask = Arrays.copyOf(arrayTask,  arrayTask.length + 1);
             arrayTask[arrayTask.length - 1] = task;
     }
 
