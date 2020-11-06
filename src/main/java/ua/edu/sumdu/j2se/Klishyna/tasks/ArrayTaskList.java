@@ -1,21 +1,17 @@
 package ua.edu.sumdu.j2se.Klishyna.tasks;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class ArrayTaskList {
-    Task[] arrayTask = new Task[0];
+    int index; //індекс масиву
+    Task[] arrayTask = new Task[index];  //масив з задачами
 
     /**
      * Додавання елементів(задач) до масиву
      * @param task задача
      */
     public void add(Task task){
-        List<Task> list = new ArrayList<>(Arrays.asList(arrayTask)); //перетворення масиву в список
-        list.add(task);  //видалення задачі зі списку
-        arrayTask = list.toArray(new Task[list.size()]); //перетворення назад
-
+           //створення масиву на основі існуючого з +1 осередком
+            System.arraycopy(arrayTask,0,arrayTask,0,arrayTask.length + 1);
+            arrayTask[arrayTask.length - 1] = task;
     }
 
     /**
@@ -25,15 +21,24 @@ public class ArrayTaskList {
      * @return повертання наявності задачі в масиві
      */
     public boolean remove(Task task){
-        for (int i = 0; i < arrayTask.length; i++){ //перебирання значень
-            if(arrayTask[i] == task){  //якщо індекс масиву дорівнює задачі, яку потрбно видалити
-                List<Task> list = new ArrayList<>(Arrays.asList(arrayTask)); //перетворення масиву в список
-                list.remove(task);  //видалення задачі зі списку
-                arrayTask = list.toArray(new Task[list.size()]); //перетворення назад
-                return true;
+        int size = arrayTask.length; //розмір масиву
+        for (int i = 0; i < size; i++) { //перебирання значень
+            if(arrayTask[i] == task){   //пошук однакової задачі
+                //створення масиву -1 ячейкою
+                //замінити всі значення масиву на 0
+                    Task[] arrayTaskRemove = new Task[arrayTask.length-1];
+                    System.arraycopy(arrayTask,0,arrayTaskRemove,0,i);
+
+                if(arrayTask.length-1 != i){   //якзо значення(задачі) не однакові
+                    //додати неоднакові задачі
+                    System.arraycopy(arrayTask,i+1,arrayTaskRemove,i,arrayTask.length-(i+1));
+                }
+                //присвоєння значень
+                arrayTask = arrayTaskRemove;
+                return true;  //істина, якщо є повторювана задача
             }
         }
-        return false;
+       return false; //якщо не має повторюваної задачі
     }
 
     /**
@@ -64,7 +69,7 @@ public class ArrayTaskList {
         ArrayTaskList resultIncoming = new ArrayTaskList();
         //перебір елементів в наборі елементів
         for (Task task : arrayTask){
-            //якщо почаковий проміжок часу не дорівнює -1 та більше початкового вказаного часу(from)
+            //якщо почаковий проміжок часу задачі не дорівнює -1 та більше початкового вказаного часу(from)
             //а також початковий проміжок часу має бути меншим/дорівнювати кінцевоПму вказаному часу
             if((task.nextTimeAfter(from) != -1 && task.nextTimeAfter(from)>from)&& task.nextTimeAfter(from)<=to){
                 //додати до задачу до списку
